@@ -1,9 +1,28 @@
 // -------------------------------------------------------------
+// Project type
+enum ProjectStatus {
+  Active,
+  Finished,
+}
+
+class Project {
+  constructor(
+    public id: string,
+    public title: string,
+    public description: string,
+    public people: number,
+    public status: ProjectStatus
+  ) {}
+}
+
+// -------------------------------------------------------------
 // Project state management
 
+type Listener = (items: Project[]) => void;
+
 class ProjectState {
-  private listeners: any[] = []; // Listeners to subscribe to
-  private projects: any[] = [];
+  private listeners: Listener[] = []; // Listeners to subscribe to
+  private projects: Project[] = [];
   private static instance: ProjectState; // This means there can only be 1 object instantiated
 
   private constructor() {}
@@ -15,17 +34,18 @@ class ProjectState {
     return this.instance;
   }
 
-  addListener(listenerFn: Function) {
+  addListener(listenerFn: Listener) {
     this.listeners.push(listenerFn);
   }
 
   addProject(title: string, description: string, numPeople: number) {
-    const newProject = {
-      id: Math.random().toString(),
+    const newProject = new Project(
+      Math.random().toString(),
       title,
       description,
       numPeople,
-    };
+      ProjectStatus.Active
+    );
 
     this.projects.push(newProject);
 
@@ -128,7 +148,7 @@ class ProjectList {
 
   element: HTMLElement;
 
-  assignedProjects: any[];
+  assignedProjects: Project[];
 
   constructor(private type: "active" | "finished") {
     this.templateElement = document.getElementById(
@@ -145,7 +165,7 @@ class ProjectList {
     this.element = importedNode.firstElementChild as HTMLElement;
     this.element.id = `${this.type}-projects`;
 
-    projectState.addListener((projects: any[]) => {
+    projectState.addListener((projects: Project[]) => {
       this.assignedProjects = projects;
       this.renderProjects();
     });
