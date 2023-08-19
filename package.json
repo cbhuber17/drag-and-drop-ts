@@ -2,18 +2,26 @@
   "name": "understanding-typescript",
   "version": "1.0.0",
   "description": "Understanding TypeScript Course Setup",
-  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "lite-server"
+    "start": "lite-server",
+    "dev": "parcel index.html",
+    "build": "parcel build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "keywords": [
     "typescript",
     "course"
   ],
-  "author": "Maximilian Schwarzmüller",
+  "author": "Colin Huber",
   "license": "ISC",
   "devDependencies": {
-    "lite-server": "^2.5.4"
-  }
+    "gh-pages": "^6.0.0",
+    "lite-server": "^2.5.4",
+    "parcel": "^2.9.3",
+    "parcel-bundler": "^1.12.5"
+  },
+  "source": "index.html",
+  "homepage": "http://cbhuber17.github.io/drag-and-drop-ts"
 }
